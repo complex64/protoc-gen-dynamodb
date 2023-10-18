@@ -1,0 +1,9 @@
+# Configuration file for buf to generate Go code from protobuf files.
+# https://buf.build/docs/configuration/v1/buf-gen-yaml/
+# Generate using `go generate ./...`.
+version: v1
+plugins:
+  - plugin: buf.build/protocolbuffers/go:v1.31.0
+    out: ..
+    opt:
+      - paths=source_relative
