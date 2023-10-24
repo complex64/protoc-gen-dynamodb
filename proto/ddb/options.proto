@@ -10,7 +10,13 @@ message EnumValueOptions {}
 message ServiceOptions {}
 message MethodOptions {}
 message FileOptions {}
-message MessageOptions {}
+
+message MessageOptions {
+  // Set this to true to indicate that this message represents a DynamoDB document
+  // and protoc-gen-go-dynamodb should generate code for you.
+  bool document = 1;
+}
+
 message FieldOptions {}
 
 extend google.protobuf.FileOptions {FileOptions file = 50300;}
