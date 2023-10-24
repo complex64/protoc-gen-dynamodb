@@ -1,0 +1,25 @@
+name: Linters
+on:
+  pull_request:
+    branches:
+      - main
+      - release/*
+    paths-ignore:
+      - '**.md'
+      - 'docs/mkdocs.yml'
+permissions:
+  contents: read
+jobs:
+  golangci:
+    name: golangci-lint
+    runs-on: ubuntu-latest
+    steps:
+      - uses: actions/checkout@v3
+      - uses: actions/setup-go@v4
+        with:
+          go-version: stable
+
+      - name: 'Run Linters Aggregator'
+        uses: golangci/golangci-lint-action@v3
+        with:
+          version: latest
