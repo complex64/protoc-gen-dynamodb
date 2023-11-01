@@ -23,7 +23,7 @@ jobs:
     steps:
       - name: Generate app token
         id: token
-        uses: tibdex/github-app-token@v1
+        uses: tibdex/github-app-token@v2
         with:
           app_id: ${{env.APP_ID}}
           private_key: ${{ secrets.RELEASE_BOT_PRIVATE_KEY }}
@@ -32,7 +32,7 @@ jobs:
             {"contents": "write", "pull_requests": "write"}
 
       - name: Checkout
-        uses: actions/checkout@v3
+        uses: actions/checkout@v4
         with:
           token: ${{ steps.token.outputs.token }}
 
@@ -64,7 +64,7 @@ jobs:
     steps:
       - name: Generate app token
         id: token
-        uses: tibdex/github-app-token@v1
+        uses: tibdex/github-app-token@v2
         with:
           app_id: ${{env.APP_ID}}
           private_key: ${{ secrets.RELEASE_BOT_PRIVATE_KEY }}
@@ -78,7 +78,7 @@ jobs:
           echo "VERSION=${VERSION##*/}" >> $GITHUB_ENV
 
       - name: Checkout
-        uses: actions/checkout@v3
+        uses: actions/checkout@v4
         with:
           token: ${{ steps.token.outputs.token }}
           fetch-depth: 0
@@ -104,13 +104,13 @@ jobs:
     steps:
       - name: Generate app token
         id: token
-        uses: tibdex/github-app-token@v1
+        uses: tibdex/github-app-token@v2
         with:
           app_id: ${{env.APP_ID}}
           private_key: ${{ secrets.RELEASE_BOT_PRIVATE_KEY }}
           repository: ${{ github.repository }}
 
-      - uses: actions/checkout@v3
+      - uses: actions/checkout@v4
       - uses: actions/setup-go@v4
         with:
           go-version: stable
@@ -136,7 +136,7 @@ jobs:
           GOARCH: ${{ matrix.goarch }}
 
       - name: Compress
-        uses: crazy-max/ghaction-upx@v2
+        uses: crazy-max/ghaction-upx@v3
         with:
           version: latest
           files: bin/*
@@ -155,7 +155,7 @@ jobs:
     steps:
       - name: Generate app token
         id: token
-        uses: tibdex/github-app-token@v1
+        uses: tibdex/github-app-token@v2
         with:
           app_id: ${{env.APP_ID}}
           private_key: ${{ secrets.RELEASE_BOT_PRIVATE_KEY }}
@@ -164,7 +164,7 @@ jobs:
             {"contents": "write", "pull_requests": "write"}
 
       - name: Checkout
-        uses: actions/checkout@v3
+        uses: actions/checkout@v4
         with:
           token: ${{ secrets.GITHUB_TOKEN }}
           fetch-depth: 0
