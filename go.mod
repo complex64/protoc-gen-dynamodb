@@ -1,4 +1,4 @@
-module github.com/complex64/protoc-gen-go-dynamodb
+module github.com/complex64/protoc-gen-dynamodb
 
 go 1.21.3
 

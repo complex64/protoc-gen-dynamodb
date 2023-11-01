@@ -4,7 +4,7 @@ Shows the options you can use in your `.proto` files.
 
 # Usage
 
-Import `options.proto` from your `.proto` files and set options to control what `protoc-gen-go-dynamodb` generates.
+Import `options.proto` from your `.proto` files and set options to control what `protoc-gen-dynamodb` generates.
 
 ```proto
 import "ddb/options.proto";
@@ -19,7 +19,7 @@ You have multiple options, depending what tools you use:
 
 ## Companion Go Module
 
-Importing `options.proto` implies your generated Go code imports the `github.com/complex64/protoc-gen-go-dynamodb/ddbpb`
+Importing `options.proto` implies your generated Go code imports the `github.com/complex64/protoc-gen-dynamodb/ddbpb`
 package.
 
 This package is distributed as [a small Go module](ddb) with minimal dependencies.

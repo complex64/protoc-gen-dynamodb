@@ -17,12 +17,12 @@ type Generator struct {
 }
 
 func (g *Generator) Generate(p *protogen.Plugin) error {
-	var ctx Context
+	ctx := NewContext(g.flags)
 	for _, f := range p.Files {
 		if !f.Generate {
 			continue
 		}
 		ctx.Add(f)
 	}
-	return ctx.Generate(g.flags)
+	return ctx.Generate(p)
 }

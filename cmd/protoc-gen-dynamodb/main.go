@@ -8,8 +8,8 @@ import (
 	"github.com/rs/zerolog/log"
 	"google.golang.org/protobuf/compiler/protogen"
 
-	"github.com/complex64/protoc-gen-go-dynamodb/internal/gen"
-	"github.com/complex64/protoc-gen-go-dynamodb/internal/zerolog"
+	"github.com/complex64/protoc-gen-dynamodb/internal/gen"
+	"github.com/complex64/protoc-gen-dynamodb/internal/zerolog"
 )
 
 func main() {

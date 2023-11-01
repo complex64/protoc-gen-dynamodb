@@ -129,7 +129,7 @@ jobs:
           path: ${{ steps.go-cache-paths.outputs.go-mod }}
 
       - run: git config --global url."https://bearer:${{ steps.token.outputs.token }}@github.com".insteadOf "https://github.com"
-      - run: mkdir bin && go build -ldflags="-w -s" -o bin/protoc-gen-go-dynamodb-${{ matrix.goos }}-${{ matrix.goarch }} ./
+      - run: mkdir bin && go build -ldflags="-w -s" -o bin/protoc-gen-dynamodb-${{ matrix.goos }}-${{ matrix.goarch }} ./
         env:
           CGO_ENABLED: 0
           GOOS: ${{ matrix.goos }}
@@ -144,8 +144,8 @@ jobs:
 
       - uses: actions/upload-artifact@v3
         with:
-          name: protoc-gen-go-dynamodb-${{ matrix.goos }}-${{ matrix.goarch }}
-          path: bin/protoc-gen-go-dynamodb-${{ matrix.goos }}-${{ matrix.goarch }}
+          name: protoc-gen-dynamodb-${{ matrix.goos }}-${{ matrix.goarch }}
+          path: bin/protoc-gen-dynamodb-${{ matrix.goos }}-${{ matrix.goarch }}
 
   perform:
     needs:
@@ -191,7 +191,7 @@ jobs:
       - name: Trigger action release
         uses: peter-evans/repository-dispatch@v2
         with:
-          repository: complex64/protoc-gen-go-dynamodb
+          repository: complex64/protoc-gen-dynamodb
           token: ${{ steps.token.outputs.token }}
           event-type: release
           client-payload: '{"version":"${{env.VERSION}}"}'

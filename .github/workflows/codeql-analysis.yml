@@ -1,4 +1,4 @@
-# https://github.com/complex64/protoc-gen-go-dynamodb/security/code-scanning
+# https://github.com/complex64/protoc-gen-dynamodb/security/code-scanning
 name: "CodeQL"
 on:
   pull_request:
