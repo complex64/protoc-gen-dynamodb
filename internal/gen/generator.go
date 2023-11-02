@@ -6,6 +6,10 @@ import (
 	"google.golang.org/protobuf/compiler/protogen"
 )
 
+const (
+	extension = "_dynamodb.pb.go"
+)
+
 func New(flags flag.FlagSet) *Generator {
 	return &Generator{
 		flags: flags,

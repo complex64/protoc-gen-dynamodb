@@ -7,8 +7,9 @@ import (
 )
 
 type Context struct {
-	flags flag.FlagSet
-	files map[*protogen.File]any
+	flags    flag.FlagSet
+	files    map[*protogen.File]any
+	packages map[protogen.GoImportPath]*packageContext
 }
 
 type out struct {
@@ -26,18 +27,20 @@ func (c *Context) Add(f *protogen.File) {
 	c.files[f] = struct{}{}
 }
 
+// Generate everything.
 func (c *Context) Generate(plugin *protogen.Plugin) error {
-	if len(c.files) == 0 {
-		return nil
-	}
 	for f := range c.files {
-		c.generateFile(plugin, f)
+		c.collectPackage(plugin, f)
+		c.genFile(plugin, f)
+	}
+	for _, p := range c.packages {
+		p.gen()
 	}
 	return nil
 }
 
-func (c *Context) generateFile(plugin *protogen.Plugin, input *protogen.File) {
-	const extension = "_dynamodb.pb.go"
+// genFile generates a single output file from a single input .proto file.
+func (c *Context) genFile(plugin *protogen.Plugin, input *protogen.File) {
 	var (
 		filename = input.GeneratedFilenamePrefix + extension
 		file     = plugin.NewGeneratedFile(filename, input.GoImportPath)
@@ -48,5 +51,19 @@ func (c *Context) generateFile(plugin *protogen.Plugin, input *protogen.File) {
 		in:     input,
 		out:    file,
 	}
-	fx.generate()
+	fx.gen()
+}
+
+// collectPackage keeps track of all packages across all input files.
+func (c *Context) collectPackage(plugin *protogen.Plugin, f *protogen.File) {
+	if c.packages == nil {
+		c.packages = make(map[protogen.GoImportPath]*packageContext)
+	}
+	if _, ok := c.packages[f.GoImportPath]; !ok {
+		c.packages[f.GoImportPath] = &packageContext{
+			flags:  c.flags,
+			plugin: plugin,
+			sample: f,
+		}
+	}
 }
