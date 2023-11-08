@@ -14,5 +14,4 @@ func newImport(path protogen.GoImportPath, name string) func(f *protogen.Generat
 			GoImportPath: path,
 		})
 	}
-
 }

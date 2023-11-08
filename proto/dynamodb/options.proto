@@ -1,8 +1,8 @@
 syntax = "proto3";
-package ddb;
+package dynamodb;
 
 import "google/protobuf/descriptor.proto";
-option go_package = "github.com/complex64/protoc-gen-dynamodb/ddb;ddb";
+option go_package = "github.com/complex64/protoc-gen-dynamodb/dynamodbpb;dynamodbpb";
 
 message OneofOptions {}
 message EnumOptions {}
@@ -17,7 +17,14 @@ message MessageOptions {
   bool document = 1;
 }
 
-message FieldOptions {}
+
+message FieldOptions {
+  bool partition_key = 1;
+  bool sort_key = 2;
+
+  string go_name = 10;
+}
+
 
 extend google.protobuf.FileOptions {FileOptions file = 50300;}
 extend google.protobuf.MessageOptions {MessageOptions message = 50301;}

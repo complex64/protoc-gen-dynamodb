@@ -8,16 +8,19 @@ import (
 )
 
 const (
-	typenameDynamoContext = "DynamoContext"
+	typeNameDynamoDBContext = "DynamoDBContext"
 )
 
 type packageContext struct {
 	// flags from the command line
 	flags flag.FlagSet
+
 	// protoc plugin handle
 	plugin *protogen.Plugin
+
 	// an input proto file from this package
 	sample *protogen.File
+
 	// output file we generate
 	out *protogen.GeneratedFile
 }
@@ -29,7 +32,6 @@ func (px *packageContext) gen() {
 		file     = px.plugin.NewGeneratedFile(filename, px.sample.GoImportPath)
 	)
 
-	// Reuse file context for the header.
 	fx := &fileContext{
 		flags:  px.flags,
 		plugin: px.plugin,
@@ -40,24 +42,43 @@ func (px *packageContext) gen() {
 	fx.writePackage()
 
 	px.out = file
-	px.genDynamoContext()
+	px.genWithDynamoDBFunc()
+	px.genReturnConsumedCapacityType()
 }
 
-// genDynamoContext generates the main Dynamo() function.
-func (px *packageContext) genDynamoContext() {
+func (px *packageContext) genWithDynamoDBFunc() {
 	var (
-		p   = px.out.P
-		ddb = importIdentDynamoDBAPI(px.out)
+		p          = px.out.P
+		clientType = importIdentDynamoDBAPI(px.out)
 	)
-	p("func Dynamo("+
-		"ddb ", ddb, ","+
-		") ", typenameDynamoContext, " {")
-	p("return ", typenameDynamoContext, "{ddb: ddb}")
+	p("func WithDynamoDB(client ", clientType, ") ", typeNameDynamoDBContext, " {")
+	p("return ", typeNameDynamoDBContext, "{client: client}")
 	p("}")
 	p()
 
-	p("type ", typenameDynamoContext, " struct {")
-	p("ddb ", ddb)
+	p("type ", typeNameDynamoDBContext, " struct {")
+	p("client ", clientType)
 	p("}")
+	p()
+}
+
+func (px *packageContext) genReturnConsumedCapacityType() {
+	var (
+		p    = px.out.P
+		name = "ReturnConsumedCapacityLevel"
+
+		ddbPkg  protogen.GoImportPath = "github.com/aws/aws-sdk-go/service/dynamodb"
+		indexes                       = newImport(ddbPkg, "ReturnConsumedCapacityIndexes")(px.out)
+		total                         = newImport(ddbPkg, "ReturnConsumedCapacityTotal")(px.out)
+		none                          = newImport(ddbPkg, "ReturnConsumedCapacityNone")(px.out)
+	)
+	p("type ", name, " struct { string }")
+	p()
+
+	p("var (")
+	p("ReturnIndexes = ", name, "{", indexes, "}")
+	p("ReturnTotal = ", name, "{", total, "}")
+	p("ReturnNone = ", name, "{", none, "}")
+	p(")")
 	p()
 }
