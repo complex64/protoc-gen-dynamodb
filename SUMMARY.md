@@ -8,6 +8,5 @@
 ## Annotations
 
 * [Introduction](annotations/introduction.md)
-* [File](annotations/file.md)
 * [Message](annotations/message.md)
 * [Field](annotations/field.md)
