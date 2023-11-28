@@ -1,3 +1,5 @@
+github.com/complex64/protoc-gen-dynamodb/dynamodbpb v0.0.0-20231128083816-63ede8c449bc h1:9qpILiQv3zGCWN5e+recZiiWAsTUiFNUM+r4ObiEehw=
+github.com/complex64/protoc-gen-dynamodb/dynamodbpb v0.0.0-20231128083816-63ede8c449bc/go.mod h1:jeXNljIv8AAgXY6wz0phzP8M+gWntbmKdQCEtqOMlvQ=
 github.com/coreos/go-systemd/v22 v22.5.0/go.mod h1:Y58oyj3AT4RCenI/lSvhwexgC+NSVTIJ3seZv2GcEnc=
 github.com/godbus/dbus/v5 v5.0.4/go.mod h1:xhWf0FNVPg57R7Z0UbKHbJfkEywrmjJnf7w5xrFpKfA=
 github.com/golang/protobuf v1.5.0/go.mod h1:FsONVRAS9T7sI+LIUmWTfcYkHO4aIWwzhcaSAoJOfIk=
