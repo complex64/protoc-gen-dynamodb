@@ -6,8 +6,12 @@
 [![Maintainability](https://api.codeclimate.com/v1/badges/6f0c7fab9bf010198e22/maintainability)](https://codeclimate.com/github/complex64/protoc-gen-dynamodb/maintainability)
 [![Go Reference](https://pkg.go.dev/badge/github.com/complex64/protoc-gen-dynamodb.svg)](https://pkg.go.dev/github.com/complex64/protoc-gen-dynamodb)
 
-Generate DynamoDB bindings for Go from your .proto files.
+The `protoc-gen-dynamodb`  [Protocol Buffer](https://developers.google.com/protocol-buffers)
+("proto") _compiler plugin_ generates a convenient Go API to map proto messages to DynamoDB items and vice versa.
 
-`protoc-gen-dynamodb` is a plugin for [protoc](https://grpc.io/docs/protoc-installation/)
-or [buf](https://docs.buf.build/introduction),
-a [Protocol Buffer](https://developers.google.com/protocol-buffers) ("proto") compiler.
+The plugin works well together with [buf](https://docs.buf.build/introduction) or the
+stock [protoc compiler](https://grpc.io/docs/protoc-installation/).
+
+## Documentation
+
+- [Installation](https://complex64.gitbook.io/protoc-gen-go-dynamodb/installation)
