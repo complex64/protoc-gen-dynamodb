@@ -21,8 +21,7 @@ message MessageOptions {
 message FieldOptions {
   bool partition_key = 1;
   bool sort_key = 2;
-
-  string go_name = 10;
+  string attribute = 3;
 }
 
 

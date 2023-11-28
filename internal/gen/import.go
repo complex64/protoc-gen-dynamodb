@@ -3,7 +3,7 @@ package gen
 import "google.golang.org/protobuf/compiler/protogen"
 
 var (
-	importContext          = newImport("context", "Context")
+	importIdentContext     = newImport("context", "Context")
 	importIdentDynamoDBAPI = newImport("github.com/aws/aws-sdk-go/service/dynamodb/dynamodbiface", "DynamoDBAPI")
 )
 

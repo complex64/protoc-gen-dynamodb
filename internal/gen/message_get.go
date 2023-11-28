@@ -96,7 +96,7 @@ func (mx *msgCtx) genGetOpReturnConsumedCapacity() {
 func (mx *msgCtx) genGetOpExecute() {
 	var (
 		p   = mx.out.P
-		ctx = importContext(mx.out)
+		ctx = importIdentContext(mx.out)
 	)
 
 	p("func (op ", mx.typeGetOp(), ") Execute("+

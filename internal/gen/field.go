@@ -15,10 +15,3 @@ func getFieldOptions(field *protogen.Field) *dynampdbpb.FieldOptions {
 	}
 	return &dynampdbpb.FieldOptions{}
 }
-
-func getFieldGoName(field *protogen.Field) string {
-	if alt := getFieldOptions(field).GoName; alt != "" {
-		return alt
-	}
-	return field.GoName
-}

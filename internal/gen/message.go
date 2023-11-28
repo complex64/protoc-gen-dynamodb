@@ -138,60 +138,114 @@ func (mx *msgCtx) typeNameTableStruct() string {
 }
 
 func (mx *msgCtx) genWrapperMethodsAndTypes() {
-	mx.genWrapperType()
-	mx.genWrapperMethods()
+	mx.genInterfaceType()
+	mx.genStructType()
+	mx.genStructMethods()
 }
 
-func (mx *msgCtx) genWrapperType() {
+func (mx *msgCtx) genInterfaceType() {
 	var (
-		p = mx.out.P
+		p   = mx.out.P
+		ctx = importIdentContext(mx.out)
 	)
 	p("type ", mx.typeNameWrapperInterface(), " interface {")
+	{
+		for _, field := range mx.Fields {
+			mx.genInterfaceGetter(field)
+		}
+		for _, field := range mx.Fields {
+			mx.genInterfaceSetter(field)
+		}
 
-	for _, field := range mx.Fields {
-		mx.genGetter(field)
-	}
-	for _, field := range mx.Fields {
-		mx.genSetter(field)
+		p("Reload(ctx ", ctx, ") error")
 	}
 
 	p("}")
 	p()
 }
 
-func (mx *msgCtx) genGetter(field *protogen.Field) {
-	var (
-		p    = mx.out.P
-		name = mx.methodNameGet(field)
-	)
-	p(name, "() ", field.Desc.Kind().String())
-}
-
-func (mx *msgCtx) genSetter(field *protogen.Field) {
-	var (
-		p    = mx.out.P
-		name = mx.methodNameSet(field)
-	)
-	p(name, "(value ", field.Desc.Kind().String(), ") ", mx.typeNameWrapperInterface())
-}
-
-func (mx *msgCtx) methodNameGet(field *protogen.Field) string {
-	return getFieldGoName(field)
-}
-
-func (mx *msgCtx) methodNameSet(field *protogen.Field) string {
-	return "Set" + getFieldGoName(field)
-}
-
-func (mx *msgCtx) genWrapperMethods() {
+func (mx *msgCtx) genInterfaceGetter(field *protogen.Field) {
 	var (
 		p = mx.out.P
 	)
-	_ = p
+	p(field.GoName, "() ", field.Desc.Kind().String())
+}
+
+func (mx *msgCtx) genInterfaceSetter(field *protogen.Field) {
+	var (
+		p = mx.out.P
+	)
+	p("Set", field.GoName, "(value ", field.Desc.Kind().String(), ")")
+}
+
+func (mx *msgCtx) genStructType() {
+	var (
+		p = mx.out.P
+	)
+	p("type ", mx.typeNameWrapperStruct(), " struct {")
+	{
+		p("proto *", mx.GoIdent.GoName)
+
+		p("changed bool")
+		for _, field := range mx.Fields {
+			p("set", field.GoName, " bool")
+		}
+	}
+	p("}")
+	p()
+}
+
+func (mx *msgCtx) genStructMethods() {
+	for _, field := range mx.Fields {
+		mx.genStructGetter(field)
+	}
+	for _, field := range mx.Fields {
+		mx.genStructSetter(field)
+	}
+	mx.genStructMethodReload()
+}
+
+func (mx *msgCtx) genStructGetter(field *protogen.Field) {
+	var (
+		p = mx.out.P
+	)
+	p("func (x *", mx.typeNameWrapperStruct(), ") ", field.GoName, "() ", field.Desc.Kind().String(), " {")
+	p("return ", "x.proto.Get", field.GoName, "()")
+	p("}")
+	p()
+}
+
+func (mx *msgCtx) genStructSetter(field *protogen.Field) {
+	var (
+		p = mx.out.P
+	)
+	p("func (x *", mx.typeNameWrapperStruct(), ") Set", field.GoName, "(value ", field.Desc.Kind().String(), ") {")
+	p("x.changed = true")
+	p("x.set", field.GoName, " = true")
+	p("x.proto.", field.GoName, " = value")
+	p("}")
+	p()
+}
+
+func (mx *msgCtx) genStructMethodReload() {
+	var (
+		p   = mx.out.P
+		ctx = importIdentContext(mx.out)
+	)
+	p("func (x *", mx.typeNameWrapperStruct(), ") Reload(ctx ", ctx, ") error {")
+	{
+		p("return nil")
+	}
+	p("}")
+	p()
 }
 
 func (mx *msgCtx) typeNameWrapperInterface() string {
 	return "DynamoDB" + mx.GoIdent.GoName
+}
+
+func (mx *msgCtx) typeNameWrapperStruct() string {
+	return "dynamoDB" + mx.GoIdent.GoName
 }
 
 func getMessageOptions(message *protogen.Message) *dynampdbpb.MessageOptions {
