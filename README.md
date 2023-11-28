@@ -15,3 +15,8 @@ stock [protoc compiler](https://grpc.io/docs/protoc-installation/).
 ## Documentation
 
 - [Installation](https://complex64.gitbook.io/protoc-gen-go-dynamodb/installation)
+- [Examples](https://complex64.gitbook.io/protoc-gen-go-dynamodb/examples)
+- [Message Option Annotations](https://complex64.gitbook.io/protoc-gen-go-dynamodb/annotations/introduction)
+  - [File](https://complex64.gitbook.io/protoc-gen-go-dynamodb/annotations/file)
+  - [Message](https://complex64.gitbook.io/protoc-gen-go-dynamodb/annotations/message)
+  - [Field](https://complex64.gitbook.io/protoc-gen-go-dynamodb/annotations/field)
