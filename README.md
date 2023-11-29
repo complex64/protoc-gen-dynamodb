@@ -1,13 +1,15 @@
 # Welcome
 
 The `protoc-gen-dynamodb` [Protocol Buffer](https://developers.google.com/protocol-buffers)
-("proto") compiler plugin generates a convenient Go API to map proto messages to DynamoDB items and vice versa.
+("proto") compiler plugin generates a convenient Go API to map proto messages to
+DynamoDB items and vice versa.
 
-The plugin works well together with [buf](https://docs.buf.build/introduction) or the
-stock [protoc compiler](https://grpc.io/docs/protoc-installation/).
+The plugin works well together with [buf](https://docs.buf.build/introduction)
+or the stock [protoc compiler](https://grpc.io/docs/protoc-installation/).
 
-Express your DynamoDB document structure as Protocol Buffer _messages_, annotate where necessary, and then generate a Go
-API without having to write boilerplate code.
+Express your DynamoDB document structure as Protocol Buffer _messages_, annotate
+where necessary, and then generate a Go API without having to write boilerplate
+code.
 
 Go from this:
 
@@ -32,3 +34,18 @@ fmt.Println(book.Title())
 ```
 
 Head over to the [installation guide](installation.md) to get started.
+
+Checkout the [examples](https://protoc-gen-dynamodb.complex64.dev/examples) for
+code samples that demonstrate some of the plugin's features and use cases.
+
+## About
+
+[Joe](https://github.com/complex64) created this plugin in 2023 to support a few
+side projects that needed simple, fast, and low-cost data persistence.
+
+Contributions from the community are most welcome.
+See [how to contribute](https://github.com/complex64/protoc-gen-dynamodb/blob/main/CONTRIBUTING.md).
+
+If you happen to find this project useful and would like to support its
+development, [show your appreciation through a small donation](https://github.com/sponsors/complex64).
+Thank you!
