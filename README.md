@@ -1,7 +1,7 @@
 # Welcome
 
 The `protoc-gen-dynamodb` [Protocol Buffer](https://developers.google.com/protocol-buffers)
-("proto") _compiler plugin_ generates a convenient Go API to map proto messages to DynamoDB items and vice versa.
+("proto") compiler plugin generates a convenient Go API to map proto messages to DynamoDB items and vice versa.
 
 The plugin works well together with [buf](https://docs.buf.build/introduction) or the
 stock [protoc compiler](https://grpc.io/docs/protoc-installation/).
