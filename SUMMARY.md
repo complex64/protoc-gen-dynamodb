@@ -2,6 +2,7 @@
 
 * [Welcome](README.md)
 * [Installation](installation.md)
+* [Usage](usage.md)
 * [GitHub Action](github-action.md)
 
 ## Annotations
