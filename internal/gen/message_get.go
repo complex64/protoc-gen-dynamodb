@@ -87,7 +87,7 @@ func (mx *msgCtx) genGetOpReturnConsumedCapacity() {
 		p = mx.out.P
 	)
 	p("func (op ", mx.typeGetOp(), ") ReturnConsumedCapacity(level ReturnConsumedCapacityLevel) (", mx.typeGetOp(), "){")
-	p("op.returnConsumedCapacity = level.string")
+	p("op.returnConsumedCapacity = string(level)")
 	p("return op")
 	p("}")
 	p()

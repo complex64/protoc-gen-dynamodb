@@ -72,13 +72,13 @@ func (px *packageContext) genReturnConsumedCapacityType() {
 		total                         = newImport(ddbPkg, "ReturnConsumedCapacityTotal")(px.out)
 		none                          = newImport(ddbPkg, "ReturnConsumedCapacityNone")(px.out)
 	)
-	p("type ", name, " struct { string }")
+	p("type ", name, " string")
 	p()
 
-	p("var (")
-	p("ReturnIndexes = ", name, "{", indexes, "}")
-	p("ReturnTotal = ", name, "{", total, "}")
-	p("ReturnNone = ", name, "{", none, "}")
+	p("const (")
+	p("ReturnIndexes = ", name, "(", indexes, ")")
+	p("ReturnTotal = ", name, "(", total, ")")
+	p("ReturnNone = ", name, "(", none, ")")
 	p(")")
 	p()
 }
