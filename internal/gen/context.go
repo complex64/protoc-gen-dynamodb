@@ -41,6 +41,17 @@ func (c *Context) Generate(plugin *protogen.Plugin) error {
 
 // genFile generates a single output file from a single input .proto file.
 func (c *Context) genFile(plugin *protogen.Plugin, input *protogen.File) {
+	skip := true
+	for _, m := range input.Messages {
+		if getMessageOptions(m).Document {
+			skip = false
+			break
+		}
+	}
+	if skip {
+		return
+	}
+
 	var (
 		filename = input.GeneratedFilenamePrefix + extension
 		file     = plugin.NewGeneratedFile(filename, input.GoImportPath)
