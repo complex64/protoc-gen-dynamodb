@@ -43,7 +43,7 @@ func (mx *msgCtx) paramNamePartitionKey() string {
 
 func (mx *msgCtx) paramNameSortKey() string {
 	if mx.sortKey == nil {
-		panic("BUG: sort key is nil")
+		return ""
 	}
 	n := mx.sortKey.GoName
 	return string(n[0]+32) + n[1:]
