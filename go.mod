@@ -4,7 +4,7 @@ go 1.21.5
 
 require (
 	github.com/complex64/protoc-gen-dynamodb/dynamodbpb v0.0.0-20231128083816-63ede8c449bc
-	github.com/rs/zerolog v1.31.0
+	github.com/rs/zerolog v1.32.0
 	google.golang.org/protobuf v1.32.0
 )
 
