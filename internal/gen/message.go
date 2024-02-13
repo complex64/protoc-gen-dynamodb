@@ -150,12 +150,12 @@ func (mx *msgCtx) genInterfaceType() {
 	)
 	p("type ", mx.typeNameWrapperInterface(), " interface {")
 	{
-		for _, field := range mx.Fields {
-			mx.genInterfaceGetter(field)
-		}
-		for _, field := range mx.Fields {
-			mx.genInterfaceSetter(field)
-		}
+		//for _, field := range mx.Fields {
+		//	mx.genInterfaceGetter(field)
+		//}
+		//for _, field := range mx.Fields {
+		//	mx.genInterfaceSetter(field)
+		//}
 
 		p("Reload(ctx ", ctx, ") error")
 	}
@@ -196,12 +196,12 @@ func (mx *msgCtx) genStructType() {
 }
 
 func (mx *msgCtx) genStructMethods() {
-	for _, field := range mx.Fields {
-		mx.genStructGetter(field)
-	}
-	for _, field := range mx.Fields {
-		mx.genStructSetter(field)
-	}
+	//for _, field := range mx.Fields {
+	//	mx.genStructGetter(field)
+	//}
+	//for _, field := range mx.Fields {
+	//	mx.genStructSetter(field)
+	//}
 	mx.genStructMethodReload()
 }
 
