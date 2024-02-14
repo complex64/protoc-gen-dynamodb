@@ -141,6 +141,7 @@ func (mx *msgCtx) genWrapperMethodsAndTypes() {
 	mx.genInterfaceType()
 	mx.genStructType()
 	mx.genStructMethods()
+	mx.genUnmarshaler()
 }
 
 func (mx *msgCtx) genInterfaceType() {
@@ -203,6 +204,20 @@ func (mx *msgCtx) genStructMethods() {
 	//	mx.genStructSetter(field)
 	//}
 	mx.genStructMethodReload()
+	mx.genStructMethodProto()
+}
+
+func (mx *msgCtx) genUnmarshaler() {
+	var (
+		p = mx.out.P
+	)
+	p("func ", mx.funcNameUnmarshaler(), "(item map[string]*dynamodb.AttributeValue) (*", mx.GoIdent.GoName, ", error) {")
+	{
+		p("return nil, nil // todo")
+	}
+	p("}")
+	p()
+
 }
 
 func (mx *msgCtx) genStructGetter(field *protogen.Field) {
@@ -240,12 +255,26 @@ func (mx *msgCtx) genStructMethodReload() {
 	p()
 }
 
+func (mx *msgCtx) genStructMethodProto() {
+	var (
+		p = mx.out.P
+	)
+	p("func (x *", mx.typeNameWrapperStruct(), ") Proto() *", mx.GoIdent.GoName, " {")
+	p("return x.proto")
+	p("}")
+	p()
+}
+
 func (mx *msgCtx) typeNameWrapperInterface() string {
 	return "DynamoDB" + mx.GoIdent.GoName
 }
 
 func (mx *msgCtx) typeNameWrapperStruct() string {
 	return "dynamoDB" + mx.GoIdent.GoName
+}
+
+func (mx *msgCtx) funcNameUnmarshaler() string {
+	return "unmarshal" + mx.GoIdent.GoName + "Naively"
 }
 
 func getMessageOptions(message *protogen.Message) *dynampdbpb.MessageOptions {

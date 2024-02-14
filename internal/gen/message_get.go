@@ -23,6 +23,7 @@ func (mx *msgCtx) genGetMethod() {
 	p("func (tx ", mx.typeNameTableStruct(), ") GetItem(", args, ") ", mx.typeGetOp(), "{")
 	{
 		p("return ", mx.typeGetOp(), "{")
+		p("tableContext: tx,")
 		p("partitionKey: ", pkName, ",")
 		if mx.sortKey != nil {
 			p("sortKey: ", skName, ",")
@@ -55,6 +56,7 @@ func (mx *msgCtx) genGetOpType() {
 		p = mx.out.P
 	)
 	p("type ", mx.typeGetOp(), " struct {")
+	p("tableContext ", mx.typeNameTableStruct())
 	p("partitionKey string")
 	p("sortKey string")
 	p("consistentRead bool")
@@ -64,18 +66,18 @@ func (mx *msgCtx) genGetOpType() {
 }
 
 func (mx *msgCtx) genGetOpMethods() {
-	mx.genGetOpConsistentRead()
+	mx.genGetOpSetConsistentRead()
 	mx.genGetOpReturnConsumedCapacity()
 	mx.genGetOpExecute()
 }
 
-func (mx *msgCtx) genGetOpConsistentRead() {
+func (mx *msgCtx) genGetOpSetConsistentRead() {
 	var (
 		p = mx.out.P
 	)
-	p("// ConsistentRead configures the GetItem operation to use strongly consistent reads.")
+	p("// SetConsistentRead configures the GetItem operation to use strongly consistent reads.")
 	p("// Otherwise, the operation uses eventually consistent reads.")
-	p("func (op ", mx.typeGetOp(), ") ConsistentRead() (", mx.typeGetOp(), "){")
+	p("func (op ", mx.typeGetOp(), ") SetConsistentRead() (", mx.typeGetOp(), "){")
 	p("op.consistentRead = true")
 	p("return op")
 	p("}")
@@ -95,18 +97,55 @@ func (mx *msgCtx) genGetOpReturnConsumedCapacity() {
 
 func (mx *msgCtx) genGetOpExecute() {
 	var (
-		p   = mx.out.P
-		ctx = importIdentContext(mx.out)
+		p            = mx.out.P
+		ctx          = importIdentContext(mx.out)
+		getItemInput = importIdentAwsGetItemInput(mx.out)
+		awsStr       = importIdentAwsString(mx.out)
+		awsBool      = importIdentAwsBool(mx.out)
+		ddbAttrVal   = importIdentDynamoDBAttributeValue(mx.out)
 	)
 
 	p("func (op ", mx.typeGetOp(), ") Execute("+
 		"ctx ", ctx, ","+
-		// todo: idea: let execute take options, for example an option to retrieve metadata for the request like consumed capacity.
 		") (",
 		mx.typeNameWrapperInterface(), ",",
 		"error,",
 		") {")
-	p("panic(\"not implemented\")")
+	{
+		p("input := &", getItemInput, "{")
+		{
+			p("TableName: ", awsStr, "(op.tableContext.name),")
+			p("Key: map[string]*", ddbAttrVal, "{")
+			{
+
+				p("\"", mx.partitionKey.Desc.Name(), "\": {")
+				p("S: ", awsStr, "(op.partitionKey),")
+				p("},")
+
+				if mx.sortKey != nil {
+					p("\"", mx.sortKey.Desc.Name(), "\": {")
+					p("S: ", awsStr, "(op.sortKey),")
+					p("},")
+
+				}
+			}
+			p("},")
+			p("ConsistentRead: ", awsBool, "(op.consistentRead),")
+			p("ReturnConsumedCapacity: ", awsStr, "(op.returnConsumedCapacity),")
+		}
+		p("}")
+
+		p("output, err := op.tableContext.client.GetItemWithContext(ctx, input)")
+		p("if err != nil {")
+		p("return nil, err")
+		p("}")
+
+		p("proto, err := ", mx.funcNameUnmarshaler(), "(output.Item)")
+		p("if err != nil {")
+		p("return nil, err")
+		p("}")
+		p("return &", mx.typeNameWrapperStruct(), "{proto: proto}, nil")
+	}
 	p("}")
 	p()
 }
